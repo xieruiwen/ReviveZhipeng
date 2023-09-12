@@ -7,8 +7,8 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-BOT_WEBHOOK_URL = "https://openapi.seatalk.io/webhook/group/2GR09OlbSzm0mBqt4GPfOQ"
-#BOT_WEBHOOK_URL = "https://openapi.seatalk.io/webhook/group/w-a0CCzIQYyGo7anZqd6HA"
+#BOT_WEBHOOK_URL = "https://openapi.seatalk.io/webhook/group/2GR09OlbSzm0mBqt4GPfOQ"
+BOT_WEBHOOK_URL = "https://openapi.seatalk.io/webhook/group/w-a0CCzIQYyGo7anZqd6HA"
 
 
 # settings
@@ -51,14 +51,16 @@ def is_valid_signature(signing_secret: bytes, body: bytes, signature: str) -> bo
 
 @app.route("/bot-callback", methods=["POST",'GET'])
 def bot_callback_handler():  
+    print(body)
     json_payload = {
                 "tag": "text",
                 "text": {
-                    "content": u"兄弟们我屌不",
+                    "content": u"111",
                     "at_all": False
                 }
             }
     httpx.post(url=BOT_WEBHOOK_URL, json=body)
+    
     body: bytes = request.get_data()
     signature: str = request.headers.get("signature")
     if not is_valid_signature(SIGNING_SECRET, body, signature):
