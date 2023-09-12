@@ -59,7 +59,7 @@ def bot_callback_handler():
                     "at_all": False
                 }
             }
-    httpx.post(url=BOT_WEBHOOK_URL, json=body)
+    httpx.post(url=BOT_WEBHOOK_URL, json=json_payload)
     
     body: bytes = request.get_data()
     signature: str = request.headers.get("signature")
