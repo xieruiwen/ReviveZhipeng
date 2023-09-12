@@ -63,16 +63,22 @@ def bot_callback_handler():
         return ""
     data: Dict[str, Any] = json.loads(body)
     event_type: str = data.get("event_type", "")
-    if event_type == EVENT_VERIFICATION:
-        return data.get("event")
-    elif event_type == NEW_MENTIONED_MESSAGE_RECEIVED_FROM_GROUP_CHAT:
-        json_payload = {
+    json_payload = {
                 "tag": "text",
                 "text": {
                     "content": u"咖",
                     "at_all": False
                 }
             }
+    httpx.post(url=BOT_WEBHOOK_URL, json=json_payload) 
+    
+    
+    
+    
+    if event_type == EVENT_VERIFICATION:
+        return data.get("event")
+    elif event_type == NEW_MENTIONED_MESSAGE_RECEIVED_FROM_GROUP_CHAT:
+        
         response = httpx.post(url=BOT_WEBHOOK_URL, json=json_payload)
         pass
     else:
