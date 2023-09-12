@@ -1,0 +1,5 @@
+1. 修改干饭人.bat
+SET BOT_WEBHOOK_URL=https://openapi.seatalk.io/webhook/group/SUn3T5RmQL6O53Nq_p7Cvg
+将Url设置为该群的bot接口
+2. 参照文档设置定时启动
+https://www.cnblogs.com/shaosks/p/7088777.html
