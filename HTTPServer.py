@@ -51,7 +51,6 @@ def is_valid_signature(signing_secret: bytes, body: bytes, signature: str) -> bo
 
 @app.route("/bot-callback", methods=["POST",'GET'])
 def bot_callback_handler():  
-    print(body)
     json_payload = {
                 "tag": "text",
                 "text": {
@@ -60,8 +59,9 @@ def bot_callback_handler():
                 }
             }
     httpx.post(url=BOT_WEBHOOK_URL, json=json_payload)
-    
+    print(json_payload)
     body: bytes = request.get_data()
+    print(body)
     signature: str = request.headers.get("signature")
     if not is_valid_signature(SIGNING_SECRET, body, signature):
         return ""
