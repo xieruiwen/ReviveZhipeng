@@ -60,7 +60,6 @@ def bot_callback_handler():
             }
     httpx.post(url=BOT_WEBHOOK_URL, json=body)
     body: bytes = request.get_data()
-   
     signature: str = request.headers.get("signature")
     if not is_valid_signature(SIGNING_SECRET, body, signature):
         return ""
@@ -69,7 +68,7 @@ def bot_callback_handler():
     if event_type == EVENT_VERIFICATION:
         return data.get("event")
     elif event_type == NEW_MENTIONED_MESSAGE_RECEIVED_FROM_GROUP_CHAT:
-        
+        httpx.post(url=BOT_WEBHOOK_URL, json=body)
         pass
     else:
         pass
