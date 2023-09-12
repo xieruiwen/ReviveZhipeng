@@ -1,4 +1,3 @@
-from flask import Flask, jsonify
 import httpx
 import hashlib
 import json
@@ -8,8 +7,8 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-#BOT_WEBHOOK_URL = "https://openapi.seatalk.io/webhook/group/2GR09OlbSzm0mBqt4GPfOQ"
-BOT_WEBHOOK_URL = "https://openapi.seatalk.io/webhook/group/w-a0CCzIQYyGo7anZqd6HA"
+BOT_WEBHOOK_URL = "https://openapi.seatalk.io/webhook/group/2GR09OlbSzm0mBqt4GPfOQ"
+#BOT_WEBHOOK_URL = "https://openapi.seatalk.io/webhook/group/w-a0CCzIQYyGo7anZqd6HA"
 
 
 # settings
@@ -42,12 +41,7 @@ def send_webhook():
             "at_all": False
         }
     }
-    response = httpx.post(url=BOT_WEBHOOK_URL, json=json_payload)
-
-    if response.status_code == 200:
-        return jsonify({"message": "Webhook sent successfully!"}), 200
-    else:
-        return jsonify({"message": "Failed to send webhook."}), 400
+    httpx.post(url=BOT_WEBHOOK_URL, json=json_payload)
 
 
 def is_valid_signature(signing_secret: bytes, body: bytes, signature: str) -> bool:
@@ -56,30 +50,26 @@ def is_valid_signature(signing_secret: bytes, body: bytes, signature: str) -> bo
 
 
 @app.route("/bot-callback", methods=["POST",'GET'])
-def bot_callback_handler():
+def bot_callback_handler():  
+    json_payload = {
+                "tag": "text",
+                "text": {
+                    "content": u"兄弟们我屌不",
+                    "at_all": False
+                }
+            }
+    httpx.post(url=BOT_WEBHOOK_URL, json=body)
     body: bytes = request.get_data()
+   
     signature: str = request.headers.get("signature")
     if not is_valid_signature(SIGNING_SECRET, body, signature):
         return ""
     data: Dict[str, Any] = json.loads(body)
     event_type: str = data.get("event_type", "")
-    json_payload = {
-                "tag": "text",
-                "text": {
-                    "content": u"咖",
-                    "at_all": False
-                }
-            }
-    httpx.post(url=BOT_WEBHOOK_URL, json=json_payload) 
-    
-    
-    
-    
     if event_type == EVENT_VERIFICATION:
         return data.get("event")
     elif event_type == NEW_MENTIONED_MESSAGE_RECEIVED_FROM_GROUP_CHAT:
         
-        response = httpx.post(url=BOT_WEBHOOK_URL, json=json_payload)
         pass
     else:
         pass
